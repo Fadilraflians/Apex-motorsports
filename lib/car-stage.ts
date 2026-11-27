@@ -113,7 +113,7 @@ export async function createCarStage(
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
-    const next = (fullscreen ? 5.4 : thumbnail ? 5.5 : 7.2) * Math.max(1, 1.45 / camera.aspect);
+    const next = (fullscreen ? 6.5 : thumbnail ? 5.5 : 7.2) * Math.max(1, 1.45 / camera.aspect);
     if (Math.abs(next - baseDistance) < 0.01) return;
     baseDistance = next;
     controls.minDistance = next * 0.7;
