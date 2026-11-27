@@ -6,10 +6,10 @@ import { prefetchCar } from '@/lib/car-loader';
 import { brands, cars, categories, paintColors } from '@/lib/game-data';
 import CarThumbnail from './car-thumbnail';
 import CarViewer from './car-viewer';
-import { useGame } from './game-state';
+import { useGame, type UpgradeStat } from './game-state';
 
 export default function Garage() {
-  const { ready, car, color, update } = useGame();
+  const { ready, car, color, update, upgradeLevels, upgradePoints, upgrade, resetUpgrades } = useGame();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('SEMUA');
   const [brand, setBrand] = useState('SEMUA');
@@ -73,6 +73,11 @@ export default function Garage() {
     ['Akselerasi', car.stats.acceleration],
     ['Handling', car.stats.handling],
   ] as const;
+  const upgradeRows: { key: UpgradeStat; label: string; part: string }[] = [
+    { key: 'speed', label: 'Kecepatan', part: 'Mesin' },
+    { key: 'acceleration', label: 'Akselerasi', part: 'Turbo' },
+    { key: 'handling', label: 'Handling', part: 'Suspensi' },
+  ];
 
   return (
     <main className="page garage">
@@ -126,20 +131,23 @@ export default function Garage() {
           <button className="arrow-button" onClick={() => step(-1)} aria-label="Mobil sebelumnya">←</button>
           <div className="paint">
             {paintable ? (
-              <div className="swatches" role="group" aria-label="Warna mobil">
-                <button className="swatch-original" aria-pressed={color === null} onClick={() => update({ color: null })}>Asli</button>
-                {paintColors.map(paint => (
-                  <button
-                    key={paint.value}
-                    className="swatch"
-                    aria-label={paint.name}
-                    title={paint.name}
-                    aria-pressed={color === paint.value}
-                    style={{ '--swatch': paint.value } as React.CSSProperties}
-                    onClick={() => update({ color: paint.value })}
-                  />
-                ))}
-              </div>
+              <fieldset className="paint-mod" aria-label="Modifikasi cat mobil">
+                <legend>Modifikasi cat</legend>
+                <div className="swatches" role="group" aria-label="Warna mobil">
+                  <button className="swatch-original" aria-pressed={color === null} onClick={() => update({ color: null })}>Asli</button>
+                  {paintColors.map(paint => (
+                    <button
+                      key={paint.value}
+                      className="swatch"
+                      aria-label={paint.name}
+                      title={paint.name}
+                      aria-pressed={color === paint.value}
+                      style={{ '--swatch': paint.value } as React.CSSProperties}
+                      onClick={() => update({ color: paint.value })}
+                    />
+                  ))}
+                </div>
+              </fieldset>
             ) : (
               <span className="paint-note">Model ini hanya tersedia dalam warna asli</span>
             )}
@@ -166,6 +174,31 @@ export default function Garage() {
           <div><dt>Tahun</dt><dd>{car.year}</dd></div>
           <div><dt>Kelas</dt><dd>{car.category}</dd></div>
         </dl>
+        <section className="upgrade-panel" aria-label="Upgrade dan modifikasi performa">
+          <div className="upgrade-head">
+            <span>Upgrade performa</span>
+            <b>{upgradePoints} POIN</b>
+          </div>
+          <p className="upgrade-note">Setiap level menambah 4 poin atribut. Upgrade disimpan untuk mobil ini.</p>
+          <div className="upgrade-list">
+            {upgradeRows.map(row => {
+              const level = upgradeLevels[row.key];
+              const canUpgrade = upgradePoints > 0 && level < 3 && car.stats[row.key] + 4 <= 100;
+              return (
+                <div className="upgrade-row" key={row.key}>
+                  <div className="upgrade-copy">
+                    <span>{row.part}<small>{row.label} · Lv {level}/3</small></span>
+                    <div className="upgrade-levels" aria-label={`Level ${level} dari 3`}>
+                      {[0, 1, 2].map(index => <i key={index} className={index < level ? 'active' : ''} />)}
+                    </div>
+                  </div>
+                  <button className="upgrade-button" disabled={!canUpgrade} onClick={() => upgrade(row.key)} aria-label={`Upgrade ${row.part}`}>+</button>
+                </div>
+              );
+            })}
+          </div>
+          <button className="upgrade-reset" disabled={upgradePoints === 6} onClick={resetUpgrades}>Reset upgrade</button>
+        </section>
         <div className="actions">
           <Link className="button primary" href="/sirkuit">Lanjut pilih sirkuit <span aria-hidden="true">→</span></Link>
           <Link className="button ghost" href="/">Kembali ke menu</Link>
