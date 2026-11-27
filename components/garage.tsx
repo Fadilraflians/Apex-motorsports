@@ -14,7 +14,26 @@ export default function Garage() {
   const [category, setCategory] = useState('SEMUA');
   const [brand, setBrand] = useState('SEMUA');
   const [paintable, setPaintable] = useState(true);
+  const [fullscreen, setFullscreen] = useState(false);
   const list = useRef<HTMLDivElement>(null);
+  const showroom = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const syncFullscreen = () => setFullscreen(document.fullscreenElement === showroom.current);
+    document.addEventListener('fullscreenchange', syncFullscreen);
+    return () => document.removeEventListener('fullscreenchange', syncFullscreen);
+  }, []);
+
+  const toggleFullscreen = async () => {
+    const element = showroom.current;
+    if (!element) return;
+    try {
+      if (document.fullscreenElement === element) await document.exitFullscreen();
+      else await element.requestFullscreen();
+    } catch {
+      // Fullscreen tidak tersedia di browser ini.
+    }
+  };
 
   const visible = cars.filter(
     item =>
@@ -120,11 +139,15 @@ export default function Garage() {
         </div>
       </aside>
 
-      <section className="showroom" aria-label="Tampilan 3D">
+      <section className="showroom" aria-label="Tampilan 3D" ref={showroom}>
         <div className="showroom-title">
           <small>{car.brand} <span>///</span> {car.category}</small>
           <h2>{car.name}</h2>
         </div>
+        <button className="showroom-fullscreen" onClick={toggleFullscreen} aria-label={fullscreen ? 'Tutup tampilan penuh' : 'Lihat mobil layar penuh'} title={fullscreen ? 'Tutup tampilan penuh (Esc)' : 'Lihat mobil layar penuh'}>
+          <span aria-hidden="true">{fullscreen ? '×' : '⛶'}</span>
+          {fullscreen ? 'Tutup' : 'Lihat detail'}
+        </button>
         {ready && <CarViewer file={car.file} color={color} onPaintable={onPaintable} />}
         <p className="showroom-hint">Seret untuk memutar · gulir untuk zoom</p>
         <div className="showroom-bar">

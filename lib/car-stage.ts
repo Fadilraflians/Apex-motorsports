@@ -108,6 +108,8 @@ export async function createCarStage(
   const resize = () => {
     const width = Math.max(1, host.clientWidth);
     const height = Math.max(1, host.clientHeight);
+    const fullscreen = host.closest('.showroom')?.matches(':fullscreen') ?? false;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, fullscreen ? 2 : 1.35));
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
