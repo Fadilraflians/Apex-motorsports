@@ -201,10 +201,14 @@ a { color: inherit; text-decoration: none; }
 .showroom-fullscreen { position: absolute; z-index: 2; top: 18px; right: 20px; display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: #0b0d12d9; border: 1px solid var(--line); color: var(--text); font: 10px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
 .showroom-fullscreen span { color: var(--red); font: 18px/1 var(--mono); }
 .showroom-fullscreen:hover { border-color: var(--red); background: #171a23; }
-.showroom:fullscreen { width: 100vw; height: 100vh; height: 100dvh; max-width: none; min-height: 0; border: 0; background: radial-gradient(ellipse at 50% 62%, #303646 0, #171a23 40%, #0b0d12 78%); }
-.showroom:fullscreen .car-viewer { inset: 88px 3vw 86px; }
+.showroom:fullscreen { width: 100vw; height: 100vh; height: 100dvh; max-width: none; min-height: 0; isolation: isolate; border: 0; background: radial-gradient(ellipse at 50% 62%, #3b414f 0, #1b1e28 31%, #101218 68%, #08090d 100%); }
+.showroom:fullscreen::before { content: attr(data-model-number); position: absolute; z-index: -1; top: 49%; left: 4vw; transform: translateY(-54%); color: #fff; opacity: .025; font: italic 900 min(43vw, 620px)/.8 var(--display); pointer-events: none; }
+.showroom:fullscreen::after { content: ''; position: absolute; z-index: -1; inset: 0; background: radial-gradient(ellipse at 50% 52%, transparent 28%, #05060955 100%), linear-gradient(115deg, transparent 44%, #ff2d3b0a 50%, transparent 56%); pointer-events: none; }
+.showroom:fullscreen .car-viewer { inset: 78px 2vw 78px; }
 .showroom:fullscreen .showroom-title { top: 24px; left: 3vw; right: 250px; }
 .showroom:fullscreen .showroom-title h2 { font-size: clamp(36px, 5vw, 76px); }
+.showroom:fullscreen .showroom-title small { color: #c4c9d4; }
+.showroom:fullscreen .showroom-title h2 { text-shadow: 0 6px 30px #0009; }
 .showroom:fullscreen .showroom-hint { bottom: 94px; }
 .showroom:fullscreen .showroom-bar { left: 28px; right: 28px; bottom: 22px; }
 .showroom:fullscreen .arrow-button { width: 54px; height: 48px; }

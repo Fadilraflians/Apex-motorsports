@@ -139,7 +139,7 @@ export default function Garage() {
         </div>
       </aside>
 
-      <section className="showroom" aria-label="Tampilan 3D" ref={showroom}>
+      <section className="showroom" aria-label="Tampilan 3D" ref={showroom} data-model-number={String(position).padStart(2, '0')}>
         <div className="showroom-title">
           <small>{car.brand} <span>///</span> {car.category}</small>
           <h2>{car.name}</h2>
