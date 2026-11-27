@@ -50,7 +50,8 @@ const carOverrides: Record<string, { name: string; year: string; brand: string; 
 export const cars = rawCars.map((slug, i) => ({
   slug,
   file: `${slug}.glb`,
-  thumb: `/thumbs/${slug}.${carOverrides[slug] ? 'svg' : 'webp'}`,
+  thumb: `/thumbs/${slug}.webp`,
+  livePreview: Boolean(carOverrides[slug]),
   name: carOverrides[slug]?.name ?? brandName(slug),
   year: carOverrides[slug]?.year ?? slug.slice(0, 4),
   brand: carOverrides[slug]?.brand ?? slug.split('_')[1].toUpperCase(),

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { prefetchCar } from '@/lib/car-loader';
 import { brands, cars, categories, paintColors } from '@/lib/game-data';
+import CarThumbnail from './car-thumbnail';
 import CarViewer from './car-viewer';
 import { useGame } from './game-state';
 
@@ -94,8 +95,10 @@ export default function Garage() {
         <div className="car-list" ref={list}>
           {visible.map(item => (
             <button key={item.slug} className="car-card" aria-pressed={item.slug === car.slug} onPointerEnter={() => prefetchCar(item.file)} onFocus={() => prefetchCar(item.file)} onClick={() => update({ car: item.slug })}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={item.thumb} alt={`${item.name}`} loading="lazy" width="480" height="270" />
+              {item.livePreview ? <CarThumbnail file={item.file} /> : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={item.thumb} alt="" aria-hidden="true" loading="lazy" width="480" height="270" />
+              )}
               <span className="car-card-text">
                 <small>{item.brand} · {item.year}</small>
                 <b>{item.name}</b>

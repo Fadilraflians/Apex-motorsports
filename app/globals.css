@@ -156,6 +156,8 @@ a { color: inherit; text-decoration: none; }
 .car-card { position: relative; display: flex; min-height: 76px; align-items: center; gap: 10px; padding: 7px 10px; overflow: hidden; text-align: left; background: #111319; border: 1px solid var(--line); transition: border-color .2s; }
 .car-card:hover { border-color: #6b7182; }
 .car-card img { display: block; flex: 0 0 92px; width: 92px; height: 58px; object-fit: contain; background: radial-gradient(ellipse at center, #303541, #171a20 72%); }
+.car-card-preview { display: block; flex: 0 0 92px; width: 92px; height: 58px; overflow: hidden; background: radial-gradient(ellipse at center, #303541, #171a20 72%); }
+.car-card-preview img { width: 92px; height: 58px; object-fit: contain; background: transparent; }
 .car-card[aria-pressed="true"] { border-color: var(--red); box-shadow: inset 0 0 0 1px var(--red); }
 
 .car-card-text { display: grid; flex: 1; min-width: 0; padding: 0; padding-right: 54px; background: transparent; }
@@ -393,6 +395,8 @@ a { color: inherit; text-decoration: none; }
   .car-list { display: flex; overflow-x: auto; }
   .car-card { flex: 0 0 210px; }
   .car-card img { flex-basis: 70px; width: 70px; height: 52px; }
+  .car-card-preview { flex-basis: 70px; width: 70px; height: 52px; }
+  .car-card-preview img { width: 70px; height: 52px; }
   .showroom-hint { display: none; }
   .showroom-bar { gap: 6px; left: 8px; right: 8px; bottom: 8px; }
   .arrow-button { width: 36px; }
