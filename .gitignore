@@ -1,0 +1,7 @@
+node_modules/
+.next/
+*.tsbuildinfo
+next-env.d.ts
+scripts/.cache/
+scripts/__pycache__/
+Mobil Sport.zip
